@@ -1,0 +1,5 @@
+{
+  "name": "StravaLens AI",
+  "description": "A modern Strava activity viewer enhanced with Gemini AI for deep performance analysis and coaching insights.",
+  "requestFramePermissions": []
+}
