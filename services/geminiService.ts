@@ -1,14 +1,12 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { StravaActivity, AIAnalysisResult } from '../types';
 
-// We use the environment variable as mandated.
-const apiKey = process.env.API_KEY || '';
-
-const ai = new GoogleGenAI({ apiKey });
+// Initialize the SDK with the API key from environment variables as mandated.
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const analyzeActivityWithGemini = async (activity: StravaActivity): Promise<AIAnalysisResult> => {
-  if (!apiKey) {
-    throw new Error("Gemini API Key is missing. Cannot perform analysis.");
+  if (!process.env.API_KEY) {
+    throw new Error("Gemini API Key is missing. Please configure it in your environment variables.");
   }
 
   const prompt = `
@@ -48,12 +46,12 @@ export const analyzeActivityWithGemini = async (activity: StravaActivity): Promi
     });
 
     const text = response.text;
-    if (!text) throw new Error("No response from AI");
+    if (!text) throw new Error("No response content from AI");
     
     return JSON.parse(text) as AIAnalysisResult;
 
   } catch (error) {
     console.error("Gemini Analysis Failed", error);
-    throw new Error("Failed to generate AI analysis.");
+    throw new Error("Failed to generate AI analysis. Please check your API key and quota.");
   }
 };
